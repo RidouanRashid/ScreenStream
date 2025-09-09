@@ -1,0 +1,14 @@
+Locatie = breukelen
+Locatie kleur = #8C9F53
+
+## Technische randvoorwaarden
+
+- Gebruik HTML5 en zorg dat de HTML gevalideerd is.
+- Maak de website geheel responsive.
+- Data wordt zoveel mogelijk asynchroon opghaald.
+- Database en SQL: er wordt aandacht besteedt aan veiligheid.
+    - Valideer alle input.
+    - Maak gebruik van de functie `htmlspecialchars().`
+    - Maak gebruik van ‘**prepared statements**’.
+- Maak gebruik van Git en feature-branches. Wijs binnen de groep een eindverantwoordelijke aan die over het samenvoegen (merge) van branches gaat.
+- Het project moet online komen te staan.
