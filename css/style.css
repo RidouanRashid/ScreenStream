@@ -1,3 +1,71 @@
 :root {
     --primary-color : #8C9F53;
 }
+
+body {
+    background-color: #000;
+}
+
+.title-container {
+    color: var(--primary-color);
+    background-color: #fff;
+    text-align: left;
+    padding: 10px;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.title-container h1 {
+    font-size: xx-large;
+    margin: 0;
+}
+
+.form-container {
+    margin: 20px 95px;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    justify-content: flex-start;
+}
+
+.form-container select {
+    display: block;
+    color: var(--primary-color);
+    font-size: large;
+    
+    padding: 12px;
+    border: 2px solid var(--primary-color);
+    background-color: white;
+
+}
+
+.form-container select option {
+    background-color: #000;
+    color: #fff;
+}
+
+.ticket-container {
+    margin-left: 200px;
+    margin-right: 200px;
+    background-color: #fff;
+}
+
+.stap-1, h2{
+    color: var(--primary-color)
+}
+
+.ticket-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.ticket-table th,
+.ticket-table td {
+  padding: 8px 10px;
+}
+
+.ticket-table td:last-child,
+.ticket-table th:last-child {
+  text-align: center; 
+}
