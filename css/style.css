@@ -1,3 +1,131 @@
+/* ===== Kleuren thema ===== */
 :root {
-    --primary-color : #8C9F53;
+    --primary-green: #88a941;
+    --primary-green-dark: #6c872f;
+    --text-dark: #333;
+    --text-light: #666;
+    --background: #ffffff;
+    --footer-bg: #2e2e2e;
+    --footer-text: #dddddd;
+}
+
+/* ===== Algemene stijl ===== */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background);
+    color: var(--text-dark);
+}
+
+/* ===== Header ===== */
+header {
+    background-color: var(--primary-green);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: bold;
+}
+
+header a:hover {
+    text-decoration: underline;
+}
+
+/* ===== Knoppen ===== */
+.btn {
+    background-color: var(--primary-green);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    transition: background 0.3s ease;
+}
+
+.btn:hover {
+    background-color: var(--primary-green-dark);
+}
+
+/* ===== Film Agenda Titel ===== */
+h2.agenda-title {
+    background-color: var(--primary-green);
+    color: #fff;
+    padding: 12px 20px;
+    margin: 0;
+    font-size: 22px;
+}
+
+/* ===== Film Cards ===== */
+.film-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 30px;
+    background: url('bioscoop-achtergrond.jpg') center/cover no-repeat;
+}
+
+.film-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.film-card img {
+    width: 100%;
+    height: 160px;
+    display: block;
+}
+
+.film-info {
+    padding: 15px;
+    flex: 1;
+}
+
+.film-info h3 {
+    margin: 0 0 10px;
+    font-size: 18px;
+    color: var(--text-dark);
+}
+
+.film-info p {
+    font-size: 14px;
+    color: var(--text-light);
+    margin-bottom: 8px;
+}
+
+/* Ticket button */
+.film-info .btn {
+    width: 100%;
+    text-align: center;
+    margin-top: auto;
+}
+
+/* ===== Footer ===== */
+footer {
+    background-color: var(--footer-bg);
+    color: var(--footer-text);
+    padding: 40px 20px;
+    text-align: center;
+    font-size: 14px;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
 }
