@@ -20,6 +20,7 @@
 
 .navbar-logo {
     display: flex;
+    align-items: center;
     gap: 10px;
 }
 
@@ -109,6 +110,74 @@
 
 .header-bar .tickets-btn:hover {
     background: #e6e6e6;
+}
+
+.filmagenda-filter-section {
+    margin-top: 30px;
+    margin-bottom: 18px;
+    padding-left: 18px;
+}
+
+.filmagenda-title {
+    font-size: 38px;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+.filmagenda-filter-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 0;
+}
+
+.filmagenda-filter-icon {
+    background: #2d1818;
+    padding: 8px 12px 8px 10px;
+    border-radius: 2px 0 0 2px;
+    display: flex;
+    align-items: center;
+    height: 40px;
+}
+
+.filmagenda-filter-icon img {
+    height: 22px;
+    filter: invert(1) brightness(1.2);
+}
+
+.filmagenda-filter-btn {
+    background: #fff;
+    color: var(--primary-color);
+    border: none;
+    border-left: 2px solid #2d1818;
+    border-radius: 0;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 8px 22px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    margin-right: -2px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.filmagenda-filter-btn.active {
+    background: var(--primary-color);
+    color: #fff;
+}
+
+.filmagenda-filter-dropdown {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-arrow {
+    margin-left: 8px;
+    font-size: 13px;
 }
 
 @media (max-width: 900px) {
