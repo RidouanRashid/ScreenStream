@@ -1,45 +1,73 @@
+<?php
+$url = "https://u240066.gluwebsite.nl/api/movies";
+
+$ch = curl_init($url);
+
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "X-API-KEY: nWF4eXPsUzVkBA8PvhzsW9jmh4niQGs9jZZMeC6F",
+    "Content-Type: application/json"
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+
+$response = curl_exec($ch);
+
+if (curl_errno($ch)) {
+    exit("Er is een fout opgetreden met de api.");
+}
+
+$movieData = json_decode($response, true);
+
+if ($movieData['status'] !== 'success') {
+    exit("Er is een fout opgetreden met de api.");
+}
+
+$films = $movieData['data']; // jouw API geeft hier al films terug
+
+curl_close($ch);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Bioscoop</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h2 class="agenda-title">Bioscoop Overzicht</h2>
+    
+<?php
+$needed = 6;
+$count = count($films);
+
+// als er minder dan 6 zijn, vul aan door te loopen
+$displayFilms = [];
+for ($i = 0; $i < $needed; $i++) {
+    $displayFilms[] = $films[$i % $count]; // % zorgt dat je opnieuw begint
+}
+?>
+
     <div class="film-grid">
-        <?php
-        // Dummy data, vervang dit morgen door data uit de API
-        $films = [
-            [
-                'titel' => 'Inception',
-                'beschrijving' => 'Een dief die dromen steelt krijgt een laatste kans op verlossing.',
-                'tijd' => '19:30',
-                'afbeelding' => 'https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_FMjpg_UX1000_.jpg',
-            ],
-            [
-                'titel' => 'The Lion King',
-                'beschrijving' => 'Het verhaal van Simba, de leeuwenkoning.',
-                'tijd' => '17:00',
-                'afbeelding' => 'https://play-lh.googleusercontent.com/E4YJiRnNiYlM-PbjVrE2Zdr2d73SWbBTzarMIurgNNdr6c_Bh9IX05-ba6vdNR822EyG',
-            ],
-            [
-                'titel' => 'Avengers: Endgame',
-                'beschrijving' => 'De Avengers nemen het op tegen Thanos in een episch slotstuk.',
-                'tijd' => '21:00',
-                'afbeelding' => 'https://m.media-amazon.com/images/I/81ExhpBEbHL._AC_SY679_.jpg',
-            ],
-        ];
-        ?>
-        <?php foreach ($films as $film): ?>
+        <?php foreach ($displayFilms as $film): ?>
             <div class="film-card">
-                <img src="<?= htmlspecialchars($film['afbeelding']) ?>" alt="Poster van <?= htmlspecialchars($film['titel']) ?>">
+                <img src="https://image.tmdb.org/t/p/w500<?= htmlspecialchars($film['movie']['poster_path']) ?>" alt="Poster van <?= htmlspecialchars($film['movie']['title']) ?>">
                 <div class="film-info">
-                    <h3><?= htmlspecialchars($film['titel']) ?></h3>
-                    <p><?= htmlspecialchars($film['beschrijving']) ?></p>
-                    <p><strong>Tijd:</strong> <?= htmlspecialchars($film['tijd']) ?></p>
-                    <a href="#" class="btn">Tickets</a>
+                    <h3><?= htmlspecialchars($film['movie']['title']) ?></h3>
+                    <div class="stars">
+                        <?php 
+                        $rating = isset($film['movie']['vote_average']) ? round($film['movie']['vote_average'] / 2) : 0;
+                        for ($i = 0; $i < 5; $i++) {
+                            echo $i < $rating ? '★' : '☆';
+                        }
+                        ?>
+                    </div>
+                    <p><strong>Release:</strong> <?= isset($film['movie']['release_date']) ? htmlspecialchars(date('d-m-Y', strtotime($film['movie']['release_date']))) : '-' ?></p>
+                    <p><?= htmlspecialchars($film['movie']['overview']) ?></p>
+                    <div class="tijd-en-tickets">
+                        <span><strong>Tijd:</strong> <?= htmlspecialchars($film['movie']['runtime']) ?> minuten</span>
+                        <a href="#" class="btn">Meer info & Tickets</a>
+                    </div>
                 </div>
             </div>
         <?php endforeach; ?>
