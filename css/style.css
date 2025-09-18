@@ -17,6 +17,10 @@ body {
   padding: 20px 0;
 }
 
+.bg-main {
+  background: url('../img/header_afbeelding.jpg');
+}
+
 /* ========== NAVBAR ========== */
 .navbar {
   width: 100%;
@@ -113,7 +117,6 @@ body {
   position: relative;
   width: 100%;
   min-height: 384px;
-  background: url('../img/stoelen.jpg') center/cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -166,7 +169,7 @@ body {
   gap: 16px;
   max-width: 1600px;
   margin: 40px auto;
-  padding: 0 20px;
+  padding: 0 60px;
 }
 
 .film-card {
@@ -239,15 +242,18 @@ body {
 
 @media (max-width: 420px) {
   .film-grid { grid-template-columns: 1fr; }
+  .film-grid { padding: 0 20px; }
 }
 
 /* ========== CONTACT ========== */
 .contact-section {
-  width: 100%;
-  background: #fff;
+  width: 80%;
+  margin: 0 auto;
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 40px 0 60px 0;
+  background: #fff;
 }
 
 .contact-row {

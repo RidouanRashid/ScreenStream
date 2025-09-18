@@ -29,7 +29,7 @@ curl_close($ch);
 
 
 <?php
-$needed = 6;
+$needed = 12;
 $count = count($films);
 
 $displayFilms = [];
