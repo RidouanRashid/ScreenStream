@@ -376,6 +376,100 @@ body {
   .seats-grid { grid-template-columns: repeat(4, 1fr); }
 }
 
+/* Filmagenda filter sectie */
+.filmagenda-filter-section {
+    margin-top: 30px;
+    margin-bottom: 18px;
+    padding: 0 18px;
+}
+
+.filmagenda-title {
+    font-size: 38px;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+}
+
+/* Filter rij standaard */
+.filmagenda-filter-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; /* laat items automatisch doorlopen */
+    gap: 8px;
+}
+
+/* Icon */
+.filmagenda-filter-icon {
+    background: #2d1818;
+    padding: 8px 12px 8px 10px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    height: 40px;
+}
+
+/* Knoppen */
+.filmagenda-filter-btn {
+    background: #fff;
+    color: var(--primary-color);
+    border: 2px solid #2d1818;
+    border-radius: 2px;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    height: 40px;
+}
+
+.filmagenda-filter-btn.active {
+    background: var(--primary-color);
+    color: #fff;
+}
+
+/* Dropdown */
+.filmagenda-filter-dropdown {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.filmagenda-filter-dropdown select {
+    background: #fff;
+    color: var(--primary-color);
+    border: 2px solid #2d1818;
+    border-radius: 2px;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 8px 16px;
+    height: 40px;
+    cursor: pointer;
+}
+
+/* Responsive: mobiel */
+@media (max-width: 768px) {
+    .filmagenda-title {
+        font-size: 28px;
+        text-align: center;
+    }
+
+    .filmagenda-filter-row {
+        flex-direction: column; /* alles onder elkaar */
+        align-items: stretch;
+    }
+
+    .filmagenda-filter-btn,
+    .filmagenda-filter-dropdown select {
+        width: 100%; /* volle breedte */
+    }
+
+    .filmagenda-filter-icon {
+        justify-content: center;
+        width: 100%;
+    }
+}
+
 
 .footer {
     background: #757575;
