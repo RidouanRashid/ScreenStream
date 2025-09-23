@@ -28,11 +28,11 @@ if($count > 0){
                         }
                         ?>
                     </div>
-                    <p><strong>Release:</strong> <?= isset($film['movie']['release_date']) ? htmlspecialchars(date('d-m-Y', strtotime($film['movie']['release_date']))) : '-' ?></p>
+                    <p><strong>Release:</stron2g> <?= isset($film['movie']['release_date']) ? htmlspecialchars(date('d-m-Y', strtotime($film['movie']['release_date']))) : '-' ?></p>
                     <p><?= htmlspecialchars($film['movie']['overview']) ?></p>
                     <div class="tijd-en-tickets">
                         <span><strong>Tijd:</strong> <?= htmlspecialchars($film['movie']['runtime']) ?> minuten</span>
-                        <a href="#" class="btn">Meer info & Tickets</a>
+                        <a href="detail.php" class="btn">Meer info & Tickets</a>
                     </div>
                 </div>
             </div>
