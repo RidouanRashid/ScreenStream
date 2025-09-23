@@ -179,8 +179,8 @@ hr {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     gap: 8px;
-    margin: 30px auto;
     max-width: 800px;
+    margin-left: 18%;
 }
 
 .seat {
@@ -188,6 +188,21 @@ hr {
     border: 2px solid var(--primary-color);
     border-radius: 4px;
     cursor: pointer;
+    position: relative;
+}
+
+.seat.handicap {
+    background-color: #f0f0f0;
+}
+
+.handicap-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
 }
 
 .seat-legend {
@@ -287,7 +302,6 @@ hr {
     width: auto;
 }
 
-/* Checkout Button */
 .checkout-container {
     text-align: center;
     margin: 40px auto;
@@ -309,5 +323,53 @@ hr {
 
 .afrekenen-btn:hover {
     opacity: 0.9;
+}
+
+.seat.available {
+    background-color: transparent;
+    border: 2px solid green;
+    transition: all 0.3s ease;
+}
+
+.seat.selected {
+    background-color: orange;
+    border-color: orange;
+    transition: all 0.3s ease;
+}
+
+.seat.unavailable {
+    background-color: #cccccc;
+    border-color: #cccccc;
+    cursor: not-allowed;
+    transition: all 0.3s ease;
+}
+
+.seat:hover {
+    transform: scale(1.1);
+}
+
+.bevestigen-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 12px 30px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase;
+    display: block;
+    margin: 30px auto 0;
+    transition: opacity 0.3s ease;
+}
+
+.bevestigen-btn:hover {
+    opacity: 0.9;
+}
+
+.seat.confirmed {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    cursor: not-allowed;
 }
 

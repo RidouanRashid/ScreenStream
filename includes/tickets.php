@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+    <script src="functions/script.js" defer></script>
     <title>ScreenStream - Tickets</title>
 </head>
+
 <body>
     <div class="title-container">
         <h1>TICKETS BESTELLEN</h1>
@@ -94,8 +97,27 @@
         <div class="seat-section">
             <div class="screen">FILMSCHERM</div>
             <div class="seats-grid">
-                <!-- This will be populated with seats -->
+                <?php
+                $rows = 10;
+                $seatsPerRow = 11;
+                for ($i = 0; $i < $rows; $i++) {
+                    for ($j = 0; $j < $seatsPerRow; $j++) {
+                        $isAvailable = 1;
+                        $seatClass = $isAvailable ? 'available' : 'unavailable';
+                        $isHandicap = ($i === $rows - 1 && $j < 2);
+                        if ($isHandicap) {
+                            echo "<div class='seat $seatClass handicap' data-row='" . ($i + 1) . "' data-seat='" . ($j + 1) . "'>
+                                    <img src='img/handicap-pictogram.png' alt='Handicap toegankelijk' class='handicap-icon'>
+                                 </div>";
+                        } else {
+                            echo "<div class='seat $seatClass' data-row='" . ($i + 1) . "' data-seat='" . ($j + 1) . "'></div>";
+                        }
+                    }
+                    echo "<br>";
+                }
+                ?>
             </div>
+            <button type="button" class="bevestigen-btn">Bevestigen</button>
             <div class="seat-legend">
                 <div class="legend-item">
                     <div class="seat available"></div>
@@ -118,7 +140,7 @@
         <h2>STAP 3: CONTROLEER JE BESTELLING</h2>
         <div class="order-section">
             <div class="movie-info">
-                <img src="../img/jurassic-world.jpg" alt="Movie Poster" class="movie-poster">
+                <img src="img/jurassic-world.jpg" alt="Movie Poster" class="movie-poster">
                 <div class="movie-details">
                     <h3>JURASSIC WORLD: FALLEN KINGDOM</h3>
                     <div class="movie-meta">
@@ -160,16 +182,16 @@
         <div class="payment-section">
             <div class="payment-methods">
                 <div class="payment-method">
-                    <img src="../img/ideal.png" alt="iDEAL">
+                    <img src="img/ideal.png" alt="iDEAL">
                     <span>iDEAL</span>
                 </div>
                 <div class="payment-method">
-                    <img src="../img/creditcard.png" alt="Credit Card">
+                    <img src="img/creditcard.png" alt="Credit Card">
                     <span>Credit Card</span>
                 </div>
                 <div class="payment-method">
-                    <img src="../img/paypal.png" alt="PayPal">
-                    <span>PayPal</span>
+                    <img src="img/maestro.png" alt="Maestro">
+                    <span>Maestro</span>
                 </div>
             </div>
         </div>
@@ -177,7 +199,7 @@
 
     <!-- Afrekenen Button -->
     <div class="checkout-container">
-        <button class="afrekenen-btn">AFREKENEN</button>
+        <button class="afrekenen-btn" onclick="location.href='includes/bon.php'">AFREKENEN</button>
+
     </div>
 </body>
-</html>
