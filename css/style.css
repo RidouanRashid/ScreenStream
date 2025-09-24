@@ -176,6 +176,7 @@ body {
   background: #fff;
   display: flex;
   flex-direction: column;
+  min-height: 480px;
 }
 
 .film-card img {
@@ -189,6 +190,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  flex: 1 1 0;
 }
 
 .film-info h3 {
@@ -390,12 +392,16 @@ body {
 }
 
 .filmagenda-title {
-    font-size: 38px;
+     background-color: #fff;
+    font-size: 260%;
     font-weight: bold;
     color: var(--primary-color);
     margin-bottom: 12px;
     letter-spacing: 1px;
+    width: 26.5%;
+    height: 60px;
 }
+
 
 /* Filter rij standaard */
 .filmagenda-filter-row {

@@ -12,7 +12,7 @@
             <a href="#">mooi logo</a>
         </div>
         <ul>
-            <li><a href="filmagenda.php">FILM AGENDA</a></li>
+            <li><a href="film-pagina.php">FILM AGENDA</a></li>
             <li><a href="#">ALLE VESTIGINGEN</a></li>
             <li><a href="contact.php">CONTACT</a></li>
         </ul>
