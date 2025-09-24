@@ -453,7 +453,7 @@ body {
     cursor: pointer;
 }
 
-/* Responsive: mobiel */
+
 @media (max-width: 768px) {
     .filmagenda-title {
         font-size: 28px;
@@ -461,13 +461,13 @@ body {
     }
 
     .filmagenda-filter-row {
-        flex-direction: column; /* alles onder elkaar */
+        flex-direction: column; 
         align-items: stretch;
     }
 
     .filmagenda-filter-btn,
     .filmagenda-filter-dropdown select {
-        width: 100%; /* volle breedte */
+        width: 100%; 
     }
 
     .filmagenda-filter-icon {
@@ -621,3 +621,16 @@ body {
         justify-content: center;
     }
 }
+
+/* ========== MOVIE DETAIL PAGE ========== */
+.movie-detail .title {
+    font-size: 44px;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 18px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    line-height: 1.1;
+}
+
+  
