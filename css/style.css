@@ -623,14 +623,232 @@ body {
 }
 
 /* ========== MOVIE DETAIL PAGE ========== */
-.movie-detail .title {
-    font-size: 44px;
-    font-weight: bold;
+
+
+.detail-titlebar {
+    width: 1400px;
+    height: 137px;
+    background: #fff;
+    padding: 30px;
+    margin: 100px auto 0 auto;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+}
+
+.detail-titlebar-title {
     color: var(--primary-color);
-    margin-bottom: 18px;
-    letter-spacing: 1.5px;
+    font-size: 54px;
+    font-weight: bold;
+    letter-spacing: 2px;
     text-transform: uppercase;
     line-height: 1.1;
 }
 
+.detail-flex-row {
+    display: flex;
+    gap: 48px;
+    align-items: flex-start;
+    margin-top: 32px;
+    justify-content: flex-start;
+}
+
+.detail-poster-col {
   
+    max-width: 663px;
+    min-width: 663px;
+    display: flex;
+    align-items: flex-start;
+    height: 1014px;
+} 
+
+.detail-poster {
+    width: 550px;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    padding-left: 150px;
+}
+
+.detail-info-col.info-block {
+    margin-top: 0;
+}
+
+.detail-info-col.info-block.detail-info-large {
+    background: #fff;
+    color: #222;
+    padding: 32px 38px 28px 38px;
+    flex: 1 1 800px;
+    min-width: 400px;
+    max-width: 940px;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    justify-content: flex-start;
+    margin-left: -100px;
+   
+}
+
+.detail-stars {
+    font-size: 38px;
+    color: #8C9F53;
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+}
+
+.detail-release {
+    font-size: 19px;
+    color: #444;
+    margin-bottom: 8px;
+}
+
+.detail-description {
+    font-size: 17px;
+    color: #222;
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.detail-meta {
+    font-size: 15px;
+    color: #222;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.detail-actors-row {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.detail-actor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    min-width: 80px;
+    max-width: 120px;
+}
+
+.detail-actor img {
+    width: 100px;
+    height: 156px;
+    object-fit: cover;
+    margin-bottom: 2px;
+}
+
+.detail-actor span {
+    font-size: 14px;
+    color: #222;
+    text-align: center;
+    word-break: break-word;
+}
+
+@media (max-width: 1600px) {
+    .detail-info-col.info-block.detail-info-large {
+        max-width: 100%;
+        min-width: 0;
+        height: auto;
+        padding: 24px 12px;
+    }
+}
+
+@media (max-width: 1600px) {
+    .detail-titlebar {
+        width: 100%;
+        min-width: 0;
+        height: auto;
+        padding: 24px 0 18px 0;
+    }
+    .detail-titlebar-title {
+        font-size: 32px;
+        padding: 0 12px;
+    }
+    .detail-flex-row {
+        flex-direction: column;
+        gap: 24px;
+        align-items: stretch;
+        margin-top: 24px;
+    }
+    .detail-poster-col {
+        max-width: 100%;
+        min-width: 0;
+        height: auto;
+    }
+    .detail-poster {
+        width: 100%;
+        height: auto;
+        max-width: 663px;
+        max-height: 1014px;
+    }
+}
+
+@media (max-width: 700px) {
+    .detail-titlebar-title {
+        font-size: 32px;
+        padding: 0 12px;
+    }
+    .detail-titlebar {
+        padding: 24px 0 18px 0;
+    }
+}
+
+@media (max-width: 900px) {
+    .detail-flex-row {
+        flex-direction: column;
+        gap: 24px;
+        align-items: stretch;
+    }
+    .detail-poster-col {
+        max-width: 100%;
+        margin-bottom: 18px;
+    }
+    .detail-info-col.info-block {
+        max-width: 100%;
+        min-width: 0;
+        padding: 24px 12px;
+    }
+}
+
+
+
+.detail-ticket-btn {
+    background: var(--primary-color);
+    color: #fff;
+    font-size: 38px;
+    font-weight: bold;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    width: 1400px;
+    height: 120px;
+    margin: 40px auto 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -400px;
+ 
+}
+
+@media (max-width: 1600px) {
+    .detail-ticketbar {
+        width: 100%;
+        height: auto;
+        min-width: 0;
+        padding: 0;
+    }
+    .detail-ticket-btn {
+        font-size: 24px;
+        padding: 18px 0;
+    }
+}
+
+
