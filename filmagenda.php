@@ -1,9 +1,12 @@
 <?php
-include 'api-con.php';
+include 'includes/header.php';
+include 'includes/navbar.php';
+include 'includes/filmfilter.php';
+include 'includes/api-con.php';
 ?>
 
 <?php
-$needed = 12;
+$needed = 18;
 $count = count($films);
 
 $displayFilms = [];
@@ -38,3 +41,7 @@ if($count > 0){
             </div>
         <?php endforeach; ?>
     </div>
+
+<?php
+include 'includes/footer.php';
+?>
