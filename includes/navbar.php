@@ -9,7 +9,14 @@
 <body>
     <nav class="navbar">
         <div class="navbar-logo">
-            <a href="#">mooi logo</a>
+            <img class='popcorn' src="./img/popcorn.png" alt="">
+            <a href="index.php">AnnexBios|Breukelen</a>
+            <img class="filmrol" src="./img/filmrol.png" alt="">
+        </div>
+        <div class="navbar-hamburger" onclick="document.querySelector('.navbar ul').classList.toggle('active')">
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
         <ul>
             <li><a href="includes/film-agenda.php">FILM AGENDA</a></li>

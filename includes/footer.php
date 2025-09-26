@@ -2,8 +2,8 @@
     <div class="footer-main">
         <div class="footer-logo-col">
             <div class="footer-logo">
-                <img src="../img/logo-footer.png" alt="AnnexBios" />
-                <span class="footer-logo-text">AnnexBios</span>
+                <img src="./img/annex.png" alt="AnnexBios" />
+                
             </div>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis,</p>
             <a href="#" class="footer-btn">LEES MEER</a>
@@ -25,7 +25,7 @@
                 <a href="#"><img src="img/insta.png" alt="Instagram" /></a>
             </div>
         </div>
-        <img class="footer-filmstrip" src="../img/filmstrip.svg" alt="filmstrip" />
+        <img class="filmstrip" src="./img/filmstrip.png" alt="filmstrip" />
     </div>
     <div class="footer-bottom">
         <span>Voorwaarden</span> |

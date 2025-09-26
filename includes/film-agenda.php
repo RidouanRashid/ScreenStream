@@ -1,5 +1,6 @@
 <?php
 include 'api-con.php';
+include 'includes/header.php';
 ?>
 
 <?php
@@ -12,6 +13,7 @@ if($count > 0){
         $displayFilms[] = $films[$i % $count];
     }
 }
+
 ?>
 
     <div class="film-grid">
@@ -32,7 +34,7 @@ if($count > 0){
                     <p><?= htmlspecialchars($film['movie']['overview']) ?></p>
                     <div class="tijd-en-tickets">
                         <span><strong>Tijd:</strong> <?= htmlspecialchars($film['movie']['runtime']) ?> minuten</span>
-                        <a href="detail.php" class="btn">Meer info & Tickets</a>
+                        <a href="detail.php?id=<?= urlencode($film['id']) ?>" class="btn">info & Tickets</a>
                     </div>
                 </div>
             </div>

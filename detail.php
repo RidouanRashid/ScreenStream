@@ -28,6 +28,7 @@ if ($movieData['status'] !== 'success') {
 }
 
 $filmData = $movieData['data']; // jouw API geeft hier al films terug
+   
 
 curl_close($ch);
 ?>
@@ -81,6 +82,18 @@ $film = $filmData['cinema'];
 <div class="detail-ticketbar">
     <a href="tickets.php?id=<?= urlencode($film['movie_screening_id']) ?>" class="detail-ticket-btn">Koop je tickets</a>
 </div>
+
+<div class="detail-trailer-section">
+    <h2 class="detail-trailer-title">TRAILER</h2>
+    <div class="detail-trailer-video">
+        <?php if (!empty($movie['trailer_url'])): ?>
+            <iframe src="<?= $movie['trailer_url'] ?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <?php else: ?>
+            <p>Geen trailer beschikbaar.</p>
+        <?php endif; ?>
+    </div>
+</div>
+
 <?php   
     include 'includes/footer.php';
 ?>
