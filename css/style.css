@@ -1,3 +1,4 @@
+
 :root {
     --primary-color: #8C9F53;
 }
@@ -175,14 +176,6 @@ hr {
     margin: 0 auto 30px;
 }
 
-.seats-grid {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 8px;
-    max-width: 800px;
-    margin-left: 18%;
-}
-
 .seat {
     aspect-ratio: 1;
     border: 2px solid var(--primary-color);
@@ -273,10 +266,10 @@ hr {
     font-size: 14px;
 }
 
-/* Payment Styles */
+
 .payment-methods {
     display: flex;
-    gap: 20px;
+    
     margin-top: 20px;
 }
 
@@ -308,8 +301,7 @@ hr {
     max-width: 1200px;
 }
 
-<<<<<<< Updated upstream
-=======
+
 .title-container {
     color: var(--primary-color);
     background-color: #fff;
@@ -459,9 +451,10 @@ hr {
 .seats-grid {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    gap: 8px;
-    max-width: 800px;
-    margin-left: 18%;
+    gap: 4px;
+    max-width: 80%;
+    
+    height: 20%;
 }
 
 .seat {
@@ -583,7 +576,7 @@ hr {
     max-width: 1200px;
 }
 
->>>>>>> Stashed changes
+
 .afrekenen-btn {
     background-color: var(--primary-color);
     color: white;
@@ -649,8 +642,7 @@ hr {
     cursor: not-allowed;
 }
 
-<<<<<<< Updated upstream
-=======
+
 .title-container .selected-movie {
     font-size: 18px;
     color: #666;
@@ -743,6 +735,9 @@ img.detail-poster-stap-3 {
     border-radius: 4px;
     margin-top: 20px;
     gap: 20px;                    /* ruimte tussen poster en info */
+    border-color: var(--primary-color);
+    border-width: 2px;
+    border-style: solid;
 }
 
 .ticket-summary {
@@ -755,6 +750,11 @@ img.detail-poster-stap-3 {
   max-width: 200px;
 }
 
+.film-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
 
 /* Responsive */
 @media (max-width: 768px) {
@@ -789,4 +789,158 @@ img.detail-poster-stap-3 {
     max-width: 300px;
   }
 }
->>>>>>> Stashed changes
+
+/* ==========  Extra responsive regels  ========== */
+
+/* Tablets en kleinere laptops */
+@media (max-width: 1024px) {
+  .form-container {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .seats-grid {
+    grid-template-columns: repeat(8, 1fr);   /* minder stoelen per rij */
+    margin-left: 0;
+  }
+
+  .order-review {
+    flex-direction: column;                  /* poster boven info */
+    align-items: center;
+  }
+
+  .stap-3-poster {
+    max-width: 300px;
+    margin-bottom: 20px;
+  }
+}
+
+/* Mobiel liggend/staand */
+@media (max-width: 768px) {
+  .ticket-header,
+  .ticket-row,
+  .voucher-row {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .text-right,
+  .voucher-input {
+    text-align: center;
+    padding-right: 0;
+    margin-top: 10px;
+  }
+
+  .seats-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+  }
+
+  .seat {
+    min-width: 32px;
+  }
+
+  .order-review {
+    padding: 15px;
+  }
+
+  .film-title {
+    text-align: center;
+    font-size: 20px;
+  }
+}
+
+/* Heel kleine schermen (bijv. iPhone SE) */
+@media (max-width: 480px) {
+  body {
+    padding: 10px 0;
+  }
+
+  .title-container h1 {
+    font-size: 22px;
+  }
+
+  .seat {
+    min-width: 28px;
+  }
+
+  .checkout-container .afrekenen-btn {
+    width: 100%;
+    min-width: auto;
+  }
+}
+
+/* Compact, fixed-size seat grid so rows line up perfectly */
+.seats-grid {
+  display: grid;
+  grid-template-columns: repeat(11, 36px); /* 11 seats per row, each 36px wide */
+  gap: 6px;
+  justify-content: center;   /* center grid inside container */
+  align-items: center;
+  max-width: 100%;
+}
+
+/* Visual seat box */
+.seat {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--primary-color);
+  border-radius: 4px;
+  font-size: 13px;
+  box-sizing: border-box;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+}
+
+/* hide default checkbox but keep it focusable/clickable */
+.seat input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+/* states */
+.seat.available { border-color: var(--primary-color); color: var(--primary-color); }
+.seat.unavailable {
+  background: #efefef;
+  border-color: #d0d0d0;
+  color: #777;
+  cursor: not-allowed;
+  pointer-events: none; /* prevent clicks */
+}
+
+/* show selected seat when input is checked — uses :has (modern browsers) */
+.seat:has(input:checked) {
+  background: var(--primary-color);
+  color: #fff;
+  border-color: var(--primary-color);
+}
+
+/* Handicap icon fits inside the small square */
+.seat.handicap img.handicap-icon {
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
+}
+
+/* Responsive: scale seats down on very small screens */
+@media (max-width: 420px) {
+  .seats-grid {
+    grid-template-columns: repeat(11, 28px);
+    gap: 4px;
+  }
+  .seat {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+}

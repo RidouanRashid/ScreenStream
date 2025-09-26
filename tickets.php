@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$url = "https://u240066.gluwebsite.nl/api/movie/" . $_GET['id'];
+$url = "https://u240066.gluwebsite.nl/api/movie/" . ($_GET['id'] ?? '');
 
 $ch = curl_init($url);
 
@@ -20,7 +20,7 @@ if (curl_errno($ch)) {
 
 $movieData = json_decode($response, true);
 
-if ($movieData['status'] !== 'success') {
+if (json_last_error() !== JSON_ERROR_NONE) {
     exit("Er is een fout opgetreden met de api.");
 }
 
@@ -28,7 +28,28 @@ $filmdata = $movieData['data']; // jouw API geeft hier al films terug
 
 
 curl_close($ch);
+
+// --- Verwerk stuurtjes vóór output zodat session direct up-to-date is ---
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Stoelen opslaan (komt van de Stoelen form)
+    if (isset($_POST['saveSeats']) && isset($_POST['seats'])) {
+        $_SESSION['selected_seats'] = [];
+        foreach ($_POST['seats'] as $seat) {
+            list($row, $seatNum) = explode('-', $seat);
+            $_SESSION['selected_seats'][] = [
+                'row'  => (int)$row,
+                'seat' => (int)$seatNum
+            ];
+        }
+        // Redirect om duplicate POST te voorkomen en de pagina met bijgewerkte sessie te tonen
+        header('Location: ' . $_SERVER['REQUEST_URI']);
+        exit;
+    }
+    // (optioneel) Tickets opslaan kan ook hier, maar let op: basePrice moet dan al bekend zijn.
+}
 ?>
+
+
 
 
 <!DOCTYPE html>
@@ -44,6 +65,56 @@ curl_close($ch);
 
 <body>
     <?php
+    
+session_start();
+require 'includes/db.php';
+
+// Controleer of de checkout POST wordt verzonden
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['payment'])) {
+
+    // --- 1. Voeg klantgegevens toe ---
+    $voornaam = $_POST['firstname'];
+    $achternaam = $_POST['surname'];
+    $email = $_POST['email'];
+
+    $stmt = $pdo->prepare("INSERT INTO gegevens (voornaam, achternaam, email) VALUES (?, ?, ?)");
+    $stmt->execute([$voornaam, $achternaam, $email]);
+    $klant_id = $pdo->lastInsertId();
+
+    // --- 2. Voeg betaalwijze toe ---
+    $methode = $_POST['payment'];
+    $stmt = $pdo->prepare("INSERT INTO betaalwijze (methode) VALUES (?)");
+    $stmt->execute([$methode]);
+    $betaal_id = $pdo->lastInsertId();
+
+    // --- 3. Voeg ticket toe ---
+    $film_id = $_SESSION['gekozen_film_id'];
+    $normaal = $_SESSION['tickets']['normaal'] ?? 0;
+    $kind = $_SESSION['tickets']['kind'] ?? 0;
+    $senior = $_SESSION['tickets']['senior'] ?? 0;
+    $totaal = ($_SESSION['tickets']['prijs'] ?? 0) * ($normaal + $kind + $senior);
+
+    $stmt = $pdo->prepare("INSERT INTO tickets (klant_id, betaal_id, film_id, normaal, kind, senior, totaal) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->execute([$klant_id, $betaal_id, $film_id, $normaal, $kind, $senior, $totaal]);
+    $ticket_id = $pdo->lastInsertId();
+
+    // --- 4. Voeg stoelen toe ---
+    if (!empty($_SESSION['selected_seats'])) {
+        $stmt = $pdo->prepare("INSERT INTO stoel (ticket_id, rij_nr, stoel_nr) VALUES (?, ?, ?)");
+        foreach ($_SESSION['selected_seats'] as $s) {
+            $stmt->execute([$ticket_id, $s['row'], $s['seat']]);
+        }
+    }
+
+    // --- 5. Sla ticket_id op in session voor bon.php ---
+    $_SESSION['last_ticket_id'] = $ticket_id;
+
+    // Redirect naar bon.php
+    header("Location: bon.php");
+    exit;
+}
+?>
+
     include 'includes/header.php';
 
     // Helper function to safely get movie information
@@ -270,14 +341,24 @@ curl_close($ch);
                         <?php
                         $rows = 10;
                         $seatsPerRow = 11;
+
+                        $alreadyChosen = [];
+                        if (!empty($_SESSION['selected_seats'])) {
+                            foreach ($_SESSION['selected_seats'] as $s) {
+                                $alreadyChosen[] = $s['row'] . '-' . $s['seat'];
+                            }
+                        }
+
                         for ($i = 0; $i < $rows; $i++) {
                             for ($j = 0; $j < $seatsPerRow; $j++) {
-                                $isAvailable = 1;
-                                $seatClass = $isAvailable ? 'available' : 'unavailable';
-                                $isHandicap = ($i === $rows - 1 && $j < 2);
                                 $seatValue = ($i + 1) . '-' . ($j + 1);
-                                echo "<label class='seat $seatClass" . ($isHandicap ? ' handicap' : '') . "'>";
-                                echo "<input type='checkbox' name='seats[]' value='$seatValue'>";
+                                $isAvailable = !in_array($seatValue, $alreadyChosen);
+                                $seatClass = $isAvailable ? 'available' : 'unavailable';
+                                $disabled  = $isAvailable ? '' : 'disabled';
+                                $isHandicap = ($i === $rows - 1 && $j < 2);
+
+                                echo "<label class='seat {$seatClass}" . ($isHandicap ? ' handicap' : '') . "'>";
+                                echo "<input type='checkbox' name='seats[]' value='$seatValue' $disabled>";
                                 if ($isHandicap) {
                                     echo "<img src='img/handicap-pictogram.png' alt='Handicap toegankelijk' class='handicap-icon'>";
                                 } else {
@@ -285,8 +366,9 @@ curl_close($ch);
                                 }
                                 echo "</label>";
                             }
-                            echo "<br>";
                         }
+
+
                         ?>
                     </div>
                     <button type="submit" name="saveSeats" class="bevestigen-btn">Stoelen opslaan</button>
@@ -338,33 +420,33 @@ curl_close($ch);
                     </div>
                     <?php if (isset($_SESSION['tickets'])): ?>
                         <ul class="ticket-summary">
-    <li><?php echo $filmdata['movie']['title']; ?></li>
-    <li>Zaal: <?php echo $filmdata['cinema']['auditorium_number']; ?></li>
-    <li>Wanneer: <?php echo $filmdata['cinema']['start_time']; ?> </li>
+                            <li class="film-title"><?php echo $filmdata['movie']['title']; ?></li>
+                            <li>Zaal: <?php echo $filmdata['cinema']['auditorium_number']; ?></li>
+                            <li>Wanneer: <?php echo $filmdata['cinema']['start_time']; ?> </li>
 
-    <?php foreach ($_SESSION['selected_seats'] as $seat): ?>
-        <?php if (!empty($seat['row']) && !empty($seat['seat'])): ?>
-            <li>Stoel: Rij <?php echo htmlspecialchars($seat['row']); ?>, Stoel <?php echo htmlspecialchars($seat['seat']); ?></li>
-        <?php endif; ?>
-    <?php endforeach; ?>
+                            <?php foreach ($_SESSION['selected_seats'] as $seat): ?>
+                                <?php if (!empty($seat['row']) && !empty($seat['seat'])): ?>
+                                    <li>Stoel: Rij <?php echo htmlspecialchars($seat['row']); ?>, Stoel <?php echo htmlspecialchars($seat['seat']); ?></li>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
 
-    <?php
-        // totaal en aantallen per type BUITEN de foreach
-        $totalTickets = array_sum([
-            $_SESSION['tickets']['normaal'],
-            $_SESSION['tickets']['kind'],
-            $_SESSION['tickets']['senior']
-        ]);
-    ?>
-    <li><strong>Totaal aantal tickets: <?php echo $totalTickets; ?></strong></li>
-    <li>Normaal: <?php echo $_SESSION['tickets']['normaal']; ?></li>
-    <li>Kind: <?php echo $_SESSION['tickets']['kind']; ?></li>
-    <li>Senior: <?php echo $_SESSION['tickets']['senior']; ?></li>
+                            <?php
+                            // totaal en aantallen per type BUITEN de foreach
+                            $totalTickets = array_sum([
+                                $_SESSION['tickets']['normaal'],
+                                $_SESSION['tickets']['kind'],
+                                $_SESSION['tickets']['senior']
+                            ]);
+                            ?>
+                            <li><strong>Totaal aantal tickets: <?php echo $totalTickets; ?></strong></li>
+                            <li>Normaal: <?php echo $_SESSION['tickets']['normaal']; ?></li>
+                            <li>Kind: <?php echo $_SESSION['tickets']['kind']; ?></li>
+                            <li>Senior: <?php echo $_SESSION['tickets']['senior']; ?></li>
 
-    <li>Totaalprijs:
-        €<?php echo number_format($_SESSION['tickets']['prijs'] * $totalTickets, 2, ',', '.'); ?>
-    </li>
-</ul>
+                            <li>Totaalprijs:
+                                €<?php echo number_format($_SESSION['tickets']['prijs'] * $totalTickets, 2, ',', '.'); ?>
+                            </li>
+                        </ul>
 
                     <?php endif; ?>
                     <?php if (isset($_SESSION['selected_seats']) && !empty($_SESSION['selected_seats'])): ?>
@@ -378,54 +460,58 @@ curl_close($ch);
 
             <div class="step-divider"></div>
             <!-- Stap 4 -->
-            <div class="ticket-container">
-                <h2>STAP 4: VUL JE GEGEVENS IN</h2>
-                <div class="form-section">
-                    <form class="contact-form">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="name">Voornaam</label>
-                                <input type="text" id="name" name="name">
-                            </div>
-                            <div class="form-group">
-                                <label for="surname">Achternaam</label>
-                                <input type="text" id="surname" name="surname">
-                            </div>
+            <div class="checkout-container">
+                <form action="bon.php" method="post">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Voornaam</label>
+                            <input type="text" id="name" name="firstname" required>
                         </div>
                         <div class="form-group">
-                            <label for="email">E-mailadres</label>
-                            <input type="email" id="email" name="email">
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <div class="step-divider"></div>
-            <!-- Stap 5 -->
-            <div class="ticket-container">
-                <h2>STAP 5: KIES JE BETAALWIJZE</h2>
-                <div class="payment-section">
-                    <div class="payment-methods">
-                        <div class="payment-method">
-                            <img src="img/ideal.png" alt="iDEAL">
-                            <span>iDEAL</span>
-                        </div>
-                        <div class="payment-method">
-                            <img src="img/creditcard.png" alt="Credit Card">
-                            <span>Credit Card</span>
-                        </div>
-                        <div class="payment-method">
-                            <img src="img/maestro.png" alt="Maestro">
-                            <span>Maestro</span>
+                            <label for="surname">Achternaam</label>
+                            <input type="text" id="surname" name="surname" required>
                         </div>
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label for="email">E-mailadres</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="step-divider"></div>
+                    <!-- Stap 5 -->
+                    <div class="ticket-container">
+                        <h2>STAP 5: KIES JE BETAALWIJZE</h2>
+                        <div class="payment-section">
+                            <div class="payment-methods">
+                                <div class="payment-method">
+                                    <img src="img/ideal.png" alt="iDEAL">
+                                    <label><input type="radio" name="payment" value="iDEAL" required> iDEAL</label>
+
+                                </div>
+                                <div class="payment-method">
+                                    <img src="img/creditcard.png" alt="Credit Card">
+                                    <label><input type="radio" name="payment" value="Credit Card"> Credit Card</label>
+
+
+                                </div>
+                                <div class="payment-method">
+                                    <img src="img/maestro.png" alt="Maestro">
+                                    <label><input type="radio" name="payment" value="Maestro"> Maestro</label>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- stap 5 -->
+                    <h3>Kies betaalmethode</h3>
+
+                    <button type="submit" class="afrekenen-btn">AFREKENEN</button>
+                    
+                </form>
             </div>
 
-            <!-- Afrekenen Button -->
-            <div class="checkout-container">
-                <button class="afrekenen-btn" onclick="location.href='bon.php'">AFREKENEN</button>
-            </div>
 
             <?php include 'includes/footer.php'; ?>
 </body>
